@@ -1,10 +1,10 @@
 # AutoTyper
 
-A macOS desktop application that reads your clipboard and types it out with human-like behavior. Copy text, press a global hotkey, and watch it get typed naturally into any focused application — complete with realistic delays and occasional typos.
+A desktop application for macOS and Windows that reads your clipboard and types it out with human-like behavior. Copy text, press a global hotkey, and watch it get typed naturally into any focused application — complete with realistic delays and occasional typos.
 
 ## Features
 
-- **Global Hotkey** — Press `Cmd+Shift+V` from any app to start typing your clipboard contents
+- **Global Hotkey** — Press `Cmd+Shift+K` (macOS) or `Ctrl+Shift+K` (Windows) from any app to start typing your clipboard contents
 - **Human-Like Typing** — Gaussian-distributed keystroke delays that mimic real typing patterns
 - **Realistic Typos** — Optional adjacent-key typos with automatic backspace correction
 - **Instant Cancel** — Press `Escape` to stop typing immediately
@@ -14,9 +14,10 @@ A macOS desktop application that reads your clipboard and types it out with huma
 
 ## Requirements
 
-- macOS 13+ (Ventura or later)
+- macOS 13+ (Ventura or later) **or** Windows 10+
 - Python 3.9+
-- Accessibility permissions (the app will guide you through setup)
+- **macOS:** Accessibility permissions (the app will guide you through setup)
+- **Windows:** No special permissions required
 
 ## Installation
 
@@ -38,10 +39,10 @@ python3 src/main.py
 ### Quick Start
 
 1. Launch the app — the GUI window will appear
-2. **Grant Accessibility permissions** when prompted (System Settings > Privacy & Security > Accessibility)
+2. **macOS only:** Grant Accessibility permissions when prompted (System Settings > Privacy & Security > Accessibility)
 3. Copy any text to your clipboard
 4. Switch to the app where you want the text typed
-5. Press **Cmd+Shift+K** — the text types out naturally
+5. Press **Cmd+Shift+K** (macOS) or **Ctrl+Shift+K** (Windows) — the text types out naturally
 6. Press **Escape** at any time to cancel
 
 ### Settings
@@ -50,7 +51,7 @@ python3 src/main.py
 |---------|-------|---------|-------------|
 | Typing Speed | 30–120 WPM | 70 WPM | How fast characters are typed |
 | Typo Rate | 0–10% | 1.5% | Chance of hitting an adjacent key |
-| Activate Hotkey | Any combo | `Cmd+Shift+K` | Triggers typing |
+| Activate Hotkey | Any combo | `Cmd+Shift+K` / `Ctrl+Shift+K` | Triggers typing |
 | Cancel Hotkey | Any combo | `Escape` | Stops typing immediately |
 
 Settings are persisted to `~/.config/autotyper/settings.json`.
@@ -73,7 +74,7 @@ The typing engine simulates human behavior through several mechanisms:
 
 - **Gaussian delays** — Inter-keystroke timing follows a normal distribution rather than fixed intervals. At 70 WPM, the mean delay is ~171ms with natural variance.
 - **Adjacent-key typos** — When a typo triggers, the engine types a neighboring key on the QWERTY layout, pauses briefly, backspaces, then types the correct character.
-- **Special character handling** — Newlines press Enter, tabs press Tab, and Unicode characters are handled natively through macOS input services.
+- **Special character handling** — Newlines press Enter, tabs press Tab, and Unicode characters are handled natively through OS input services.
 
 ### Architecture
 
@@ -81,6 +82,7 @@ The typing engine simulates human behavior through several mechanisms:
 src/
 ├── main.py                  # Entry point
 ├── app_controller.py        # Orchestrator — wires all modules together
+├── platform_support.py      # Platform-aware constants (hotkeys, fonts)
 ├── gui/
 │   ├── main_window.py       # Status display, hotkey hint, window chrome
 │   └── settings_panel.py    # Speed/typo sliders, hotkey entries
@@ -95,7 +97,7 @@ src/
 ├── config/
 │   └── config_store.py      # JSON settings with atomic writes
 └── permissions/
-    └── accessibility.py     # macOS Accessibility permission helper
+    └── accessibility.py     # Platform-aware permission helper
 ```
 
 **Threading model:**
@@ -106,7 +108,9 @@ src/
 | Hotkey listener | pynput keyboard listener (daemon) |
 | Typing worker | Keystroke injection (one at a time, lock-guarded) |
 
-## macOS Accessibility Permissions
+## Platform Notes
+
+### macOS — Accessibility Permissions
 
 AutoTyper needs Accessibility permissions to register global hotkeys and simulate keystrokes. On first launch:
 
@@ -116,6 +120,10 @@ AutoTyper needs Accessibility permissions to register global hotkeys and simulat
 4. Restart AutoTyper
 
 > **Note:** When running from the terminal, permissions are granted to the terminal app itself, not to Python. If you bundle AutoTyper as a `.app`, the bundle gets its own permission entry.
+
+### Windows
+
+No special permissions are required. AutoTyper uses standard Windows input hooks via pynput. If you encounter issues registering hotkeys, try running the application as Administrator.
 
 ## Development
 
