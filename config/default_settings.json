@@ -2,7 +2,7 @@
     "typing_speed_wpm": 70,
     "speed_variance": 0.3,
     "typo_rate": 0.015,
-    "activate_hotkey": "<cmd>+<shift>+k",
+    "activate_hotkey": "<ctrl>+<shift>+k",
     "cancel_hotkey": "<esc>",
     "min_delay_ms": 20.0,
     "max_delay_ms": 300.0

@@ -5,8 +5,10 @@ from __future__ import annotations
 import json
 import os
 import tempfile
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
+
+from src.platform_support import DEFAULT_ACTIVATE_HOTKEY, DEFAULT_CANCEL_HOTKEY
 
 
 @dataclass
@@ -16,8 +18,8 @@ class AppSettings:
     typing_speed_wpm: int = 70       # range 30-120
     speed_variance: float = 0.3      # range 0.0-1.0
     typo_rate: float = 0.015         # range 0.0-0.10
-    activate_hotkey: str = "<cmd>+<shift>+v"
-    cancel_hotkey: str = "<esc>"
+    activate_hotkey: str = field(default_factory=lambda: DEFAULT_ACTIVATE_HOTKEY)
+    cancel_hotkey: str = field(default_factory=lambda: DEFAULT_CANCEL_HOTKEY)
     min_delay_ms: float = 20.0
     max_delay_ms: float = 300.0
 
@@ -29,9 +31,9 @@ class AppSettings:
         self.min_delay_ms = max(1.0, float(self.min_delay_ms))
         self.max_delay_ms = max(self.min_delay_ms, float(self.max_delay_ms))
         if not isinstance(self.activate_hotkey, str) or not self.activate_hotkey.strip():
-            self.activate_hotkey = "<cmd>+<shift>+v"
+            self.activate_hotkey = DEFAULT_ACTIVATE_HOTKEY
         if not isinstance(self.cancel_hotkey, str) or not self.cancel_hotkey.strip():
-            self.cancel_hotkey = "<esc>"
+            self.cancel_hotkey = DEFAULT_CANCEL_HOTKEY
 
 
 def _project_root() -> Path:
