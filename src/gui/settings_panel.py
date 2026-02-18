@@ -6,15 +6,17 @@ import customtkinter as ctk
 from typing import Callable
 
 from src.config.config_store import AppSettings
+from src.platform_support import DEFAULT_ACTIVATE_HOTKEY, IS_MACOS, MONOSPACE_FONT
 
 
 _DEFAULT_SETTINGS = AppSettings()
 
 # Hotkey capture instructions shown in the change-hotkey flow
+_HOTKEY_EXAMPLE = "<cmd>+<shift>+k" if IS_MACOS else "<ctrl>+<shift>+k"
 _HOTKEY_INSTRUCTIONS = (
     "To change the hotkey, edit the field directly.\n\n"
     "Use the pynput key-name format, e.g.:\n"
-    "  <cmd>+<shift>+v\n"
+    f"  {_HOTKEY_EXAMPLE}\n"
     "  <ctrl>+<alt>+t\n\n"
     "Press Enter or click away to confirm."
 )
@@ -27,7 +29,7 @@ class _SectionLabel(ctk.CTkLabel):
         super().__init__(
             master,
             text=text.upper(),
-            font=ctk.CTkFont(family="Menlo", size=10, weight="bold"),
+            font=ctk.CTkFont(family=MONOSPACE_FONT, size=10, weight="bold"),
             text_color=("#6B7280", "#6B7280"),
             **kwargs,
         )
@@ -40,7 +42,7 @@ class _ValueLabel(ctk.CTkLabel):
         super().__init__(
             master,
             text=text,
-            font=ctk.CTkFont(family="Menlo", size=13),
+            font=ctk.CTkFont(family=MONOSPACE_FONT, size=13),
             text_color=("#F59E0B", "#F59E0B"),
             width=52,
             anchor="e",
@@ -160,8 +162,8 @@ class SettingsPanel(ctk.CTkFrame):
         self._activate_entry = ctk.CTkEntry(
             activate_row,
             textvariable=self._activate_var,
-            font=ctk.CTkFont(family="Menlo", size=12),
-            placeholder_text="e.g. <cmd>+<shift>+v",
+            font=ctk.CTkFont(family=MONOSPACE_FONT, size=12),
+            placeholder_text=f"e.g. {DEFAULT_ACTIVATE_HOTKEY}",
             height=32,
             corner_radius=8,
         )
@@ -194,7 +196,7 @@ class SettingsPanel(ctk.CTkFrame):
         self._cancel_entry = ctk.CTkEntry(
             cancel_row,
             textvariable=self._cancel_var,
-            font=ctk.CTkFont(family="Menlo", size=12),
+            font=ctk.CTkFont(family=MONOSPACE_FONT, size=12),
             placeholder_text="e.g. <esc>",
             height=32,
             corner_radius=8,
@@ -288,7 +290,7 @@ class SettingsPanel(ctk.CTkFrame):
         ctk.CTkLabel(
             dialog,
             text=_HOTKEY_INSTRUCTIONS,
-            font=ctk.CTkFont(family="Menlo", size=12),
+            font=ctk.CTkFont(family=MONOSPACE_FONT, size=12),
             justify="left",
             wraplength=300,
         ).pack(padx=24, pady=(24, 16), anchor="w")

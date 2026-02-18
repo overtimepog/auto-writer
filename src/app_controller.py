@@ -3,6 +3,7 @@
 import threading
 
 from src.config.config_store import ConfigStore, AppSettings
+from src.platform_support import DEFAULT_ACTIVATE_HOTKEY
 from src.clipboard.clipboard_reader import (
     ClipboardReader,
     EmptyClipboardError,
@@ -53,11 +54,7 @@ class AppController:
         except Exception:
             # Hotkeys failed - likely missing accessibility permissions
             self._gui.show_error(
-                "Could not register global hotkeys.\n\n"
-                "Please grant Accessibility permissions:\n"
-                "System Settings > Privacy & Security > Accessibility\n\n"
-                "Add your terminal app (or AutoTyper.app) to the list, "
-                "then restart the application."
+                AccessibilityChecker.get_permission_error_message()
             )
             AccessibilityChecker.open_accessibility_prefs()
 
@@ -105,7 +102,7 @@ class AppController:
             except (ValueError, KeyError) as e:
                 self._gui.show_error(
                     f"Invalid hotkey format: {e}\n\n"
-                    "Use pynput format like <cmd>+<shift>+v\n"
+                    f"Use pynput format like {DEFAULT_ACTIVATE_HOTKEY}\n"
                     "Hotkeys reverted to previous values."
                 )
                 # Revert hotkey settings to the old working values

@@ -9,6 +9,7 @@ import customtkinter as ctk
 
 from src.config.config_store import AppSettings
 from src.gui.settings_panel import SettingsPanel
+from src.platform_support import MONOSPACE_FONT
 
 
 # Apply appearance before any widget is created.
@@ -70,7 +71,7 @@ class _StatusBadge(ctk.CTkFrame):
         self._label = ctk.CTkLabel(
             inner,
             text="Idle",
-            font=ctk.CTkFont(family="Menlo", size=18, weight="bold"),
+            font=ctk.CTkFont(family=MONOSPACE_FONT, size=18, weight="bold"),
             text_color="#10B981",
         )
         self._label.pack(side="left")
@@ -101,7 +102,7 @@ class _HotkeyHint(ctk.CTkFrame):
         self._key_label = ctk.CTkLabel(
             self,
             text=self._fmt(hotkey),
-            font=ctk.CTkFont(family="Menlo", size=12, weight="bold"),
+            font=ctk.CTkFont(family=MONOSPACE_FONT, size=12, weight="bold"),
             text_color=("#F59E0B", "#F59E0B"),
         )
         self._key_label.pack(side="left", pady=10)
@@ -216,7 +217,7 @@ class MainWindow:
         ctk.CTkLabel(
             header,
             text="AutoTyper",
-            font=ctk.CTkFont(family="Menlo", size=22, weight="bold"),
+            font=ctk.CTkFont(family=MONOSPACE_FONT, size=22, weight="bold"),
             text_color=("#F9FAFB", "#F9FAFB"),
             anchor="w",
         ).pack(side="left")
@@ -224,7 +225,7 @@ class MainWindow:
         ctk.CTkLabel(
             header,
             text="v1.0",
-            font=ctk.CTkFont(family="Menlo", size=11),
+            font=ctk.CTkFont(family=MONOSPACE_FONT, size=11),
             text_color=("#6B7280", "#6B7280"),
             anchor="e",
         ).pack(side="right", pady=(6, 0))
@@ -244,7 +245,7 @@ class MainWindow:
         ctk.CTkLabel(
             root,
             text="SETTINGS",
-            font=ctk.CTkFont(family="Menlo", size=10, weight="bold"),
+            font=ctk.CTkFont(family=MONOSPACE_FONT, size=10, weight="bold"),
             text_color=("#6B7280", "#6B7280"),
             anchor="w",
         ).pack(fill="x", padx=24, pady=(14, 4))

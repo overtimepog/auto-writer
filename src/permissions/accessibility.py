@@ -35,6 +35,30 @@ class AccessibilityChecker:
             return False
 
     @staticmethod
+    def get_permission_error_message() -> str:
+        """Return platform-appropriate guidance for permission issues."""
+        if sys.platform == "darwin":
+            return (
+                "Could not register global hotkeys.\n\n"
+                "Please grant Accessibility permissions:\n"
+                "System Settings > Privacy & Security > Accessibility\n\n"
+                "Add your terminal app (or AutoTyper.app) to the list, "
+                "then restart the application."
+            )
+        if sys.platform == "win32":
+            return (
+                "Could not register global hotkeys.\n\n"
+                "Try running the application as Administrator.\n"
+                "If the issue persists, check that no other application "
+                "is using the same hotkey."
+            )
+        return (
+            "Could not register global hotkeys.\n\n"
+            "Ensure your desktop environment allows global hotkey "
+            "registration, then restart the application."
+        )
+
+    @staticmethod
     def open_accessibility_prefs() -> None:
         """Open macOS System Settings to the Accessibility pane."""
         if sys.platform != "darwin":
