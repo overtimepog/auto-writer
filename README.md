@@ -67,7 +67,7 @@ python3 src/main.py
 | Activate Hotkey | Any combo | `Cmd+Shift+K` / `Ctrl+Shift+K` | Triggers typing |
 | Cancel Hotkey | Any combo | `Escape` | Stops typing immediately |
 
-Settings are persisted to `~/.config/autotyper/settings.json`.
+Settings are persisted to `~/.config/Human-Auto-Typer/settings.json`.
 
 ### Hotkey Format
 
