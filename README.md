@@ -15,24 +15,37 @@ A desktop application for macOS and Windows that reads your clipboard and types 
 ## Requirements
 
 - macOS 13+ (Ventura or later) **or** Windows 10+
-- Python 3.9+
+- Python 3.11 or 3.13
 - **macOS:** Accessibility permissions (the app will guide you through setup)
+- **macOS:** tkinter (`brew install python-tk@3.13` if using Homebrew Python)
 - **Windows:** No special permissions required
 
-## Installation
+## Installation & Usage
 
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/autowriter.git
 cd autowriter
-
-# Install dependencies
-pip install -r requirements.txt
 ```
 
-## Usage
+The included launcher scripts handle everything automatically — they find the right Python version, create a virtual environment, install dependencies (only when needed), and start the app.
+
+**macOS / Linux:**
 
 ```bash
+./run.sh
+```
+
+**Windows:**
+
+```bat
+run.bat
+```
+
+**Manual launch** (if you prefer to manage your own environment):
+
+```bash
+pip install -r requirements.txt
 python3 src/main.py
 ```
 
