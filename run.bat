@@ -12,43 +12,40 @@ set "REQUIREMENTS=%PROJECT_ROOT%\requirements.txt"
 set "HASH_FILE=%VENV_DIR%\.requirements_hash"
 
 REM ---------------------------------------------------------------------------
-REM 1. Find Python 3
+REM 1. Find the newest Python 3 installation
 REM ---------------------------------------------------------------------------
 set "PYTHON_CMD="
+set "BEST_MAJOR=0"
+set "BEST_MINOR=0"
 
-REM Try "python" first
-python --version >nul 2>&1
-if not errorlevel 1 (
-    for /f "tokens=2" %%v in ('python --version 2^>^&1') do set "PY_VER=%%v"
-    if "!PY_VER:~0,1!"=="3" set "PYTHON_CMD=python"
-)
-
-REM Try "python3" if not found yet
-if not defined PYTHON_CMD (
-    python3 --version >nul 2>&1
+REM Check versioned candidates from newest to oldest, plus generic names
+for %%c in (python3.13 python3.11) do (
+    %%c --version >nul 2>&1
     if not errorlevel 1 (
-        for /f "tokens=2" %%v in ('python3 --version 2^>^&1') do set "PY_VER=%%v"
-        if "!PY_VER:~0,1!"=="3" set "PYTHON_CMD=python3"
+        for /f "tokens=2 delims= " %%v in ('%%c --version 2^>^&1') do (
+            for /f "tokens=1,2 delims=." %%a in ("%%v") do (
+                if "%%a"=="3" (
+                    set "THIS_MINOR=%%b"
+                    if !THIS_MINOR! gtr !BEST_MINOR! (
+                        set "BEST_MAJOR=3"
+                        set "BEST_MINOR=!THIS_MINOR!"
+                        set "PYTHON_CMD=%%c"
+                    )
+                )
+            )
+        )
     )
 )
 
-REM Try "py -3" (Windows py launcher) if still not found
+REM Bail out if no suitable Python was found
 if not defined PYTHON_CMD (
-    py -3 --version >nul 2>&1
-    if not errorlevel 1 (
-        set "PYTHON_CMD=py -3"
-    )
-)
-
-REM Bail out if no Python 3 was found
-if not defined PYTHON_CMD (
-    echo ERROR: Python 3 could not be found.
-    echo Please install Python 3 from https://www.python.org/ and ensure it is on your PATH.
+    echo ERROR: Python 3.11 or 3.13 is required but was not found.
+    echo Please install Python 3.11 or 3.13 from https://www.python.org/ and ensure it is on your PATH.
     pause
     exit /b 1
 )
 
-echo Found Python 3: %PYTHON_CMD%
+echo Found Python: %PYTHON_CMD%
 
 REM ---------------------------------------------------------------------------
 REM 2. Create virtual environment if it does not exist
@@ -97,7 +94,7 @@ if "%NEEDS_INSTALL%"=="0" (
 
 if "%NEEDS_INSTALL%"=="1" (
     echo Installing / updating dependencies ...
-    "%VENV_DIR%\Scripts\pip.exe" install -r "%REQUIREMENTS%"
+    "%VENV_DIR%\Scripts\python.exe" -m pip install -r "%REQUIREMENTS%"
     if errorlevel 1 (
         echo ERROR: pip install failed.
         pause
