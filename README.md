@@ -24,8 +24,8 @@ A desktop application for macOS and Windows that reads your clipboard and types 
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/autowriter.git
-cd autowriter
+git clone https://github.com/overtimepog/Human-Auto-Typer
+cd Human-Auto-Typer
 ```
 
 The included launcher scripts handle everything automatically — they find the right Python version, create a virtual environment, install dependencies (only when needed), and start the app.
