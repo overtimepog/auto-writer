@@ -41,7 +41,7 @@ python3 src/main.py
 2. **Grant Accessibility permissions** when prompted (System Settings > Privacy & Security > Accessibility)
 3. Copy any text to your clipboard
 4. Switch to the app where you want the text typed
-5. Press **Cmd+Shift+V** — the text types out naturally
+5. Press **Cmd+Shift+K** — the text types out naturally
 6. Press **Escape** at any time to cancel
 
 ### Settings
@@ -50,7 +50,7 @@ python3 src/main.py
 |---------|-------|---------|-------------|
 | Typing Speed | 30–120 WPM | 70 WPM | How fast characters are typed |
 | Typo Rate | 0–10% | 1.5% | Chance of hitting an adjacent key |
-| Activate Hotkey | Any combo | `Cmd+Shift+V` | Triggers typing |
+| Activate Hotkey | Any combo | `Cmd+Shift+K` | Triggers typing |
 | Cancel Hotkey | Any combo | `Escape` | Stops typing immediately |
 
 Settings are persisted to `~/.config/autotyper/settings.json`.
@@ -60,7 +60,7 @@ Settings are persisted to `~/.config/autotyper/settings.json`.
 Hotkeys use [pynput key notation](https://pynput.readthedocs.io/en/latest/keyboard.html#pynput.keyboard.Key):
 
 ```
-<cmd>+<shift>+v       # Command + Shift + V
+<cmd>+<shift>+k       # Command + Shift + K
 <ctrl>+<alt>+t        # Control + Alt + T
 <esc>                  # Escape
 ```
