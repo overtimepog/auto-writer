@@ -1,5 +1,4 @@
-# Human Auto Typer
-# HAT
+# Human Auto Typer (HAT)
 
 A desktop application for macOS and Windows that reads your clipboard and types it out with human-like behavior. Copy text, press a global hotkey, and watch it get typed naturally into any focused application — complete with realistic delays and occasional typos.
 
